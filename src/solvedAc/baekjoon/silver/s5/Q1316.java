@@ -3,13 +3,22 @@ package solvedAc.baekjoon.silver.s5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+
+
 
 /**
- * https://www.acmicpc.net/problem/1316
+ * 문제 풀이:
+ * 플랫폼:
+ * 제한시간: 30분
+ *
+ * 1. 문제 접근 아이디어
+ *
+ *
+ * 2. solveVn() 메서드 사용
+ *    - 막힌 부분, 문제 발생 원인 등을 주석으로 정리
+ *
  */
+
 public class Q1316 {
     public static void main(String[] args) throws IOException {
 
@@ -22,8 +31,9 @@ public class Q1316 {
             boolean[] check = new boolean[26];
             String str = br.readLine();
             char prev = str.charAt(0);
+            check[prev - 'a'] = true;
 
-            for (int j = 0; j < str.length(); j++) {
+            for (int j = 1; j < str.length(); j++) {
                 char now = str.charAt(j);
 
                 if (now != prev) {
@@ -32,7 +42,6 @@ public class Q1316 {
                         check[now - 97] = true;
                         prev = now;
                     } else {
-                        System.out.println(str);
                         count--;
                         break;
                     }
