@@ -29,7 +29,7 @@ import java.util.Arrays;
  * 처음 등장하는 위치만 저장해야 된다.
  */
 
-public class Q10809 {
+public class Q10818 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s = br.readLine();
