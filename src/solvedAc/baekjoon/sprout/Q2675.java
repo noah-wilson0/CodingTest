@@ -3,6 +3,7 @@ package solvedAc.baekjoon.sprout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
@@ -48,6 +49,19 @@ public class Q2675 {
             System.out.println(sb);
 
         }
+        // 2026-01-22복습 완
+        /*
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        for (int i = 0; i < t; i++) {
+            int r = sc.nextInt();
+            String s = sc.next();
+            for (int j = 0; j < s.length(); j++) {
+                for (int k = 0; k < r; k++) {
+                    System.out.print(s.charAt(j));
+                }
+            }
+        }*/
 
 
     }

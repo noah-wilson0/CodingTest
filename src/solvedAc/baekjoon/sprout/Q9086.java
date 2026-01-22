@@ -3,6 +3,7 @@ package solvedAc.baekjoon.sprout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 /**
  * 제목: 문자열
@@ -38,6 +39,20 @@ public class Q9086 {
             System.out.println(""+s.charAt(0)+s.charAt(s.length()-1));
 
         }
+
+        //9086 2026-01-22복습 완 6분 소비
+        // 이슈: Scanner '\0'
+
+        /*Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        sc.nextLine();
+        for (int i = 0; i < t; i++) {
+            String s = sc.nextLine();
+            StringBuilder sb=new StringBuilder();
+            sb.append(s.charAt(0));
+            sb.append(s.charAt(s.length() - 1));
+            System.out.println(sb);
+        }*/
 
     }
 }

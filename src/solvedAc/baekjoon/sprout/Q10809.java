@@ -46,5 +46,24 @@ public class Q10809 {
         for (int i : a) {
             System.out.print(i+" ");
         }
+
+        //10809 2026-01-22복습 완 5분 +5분소비
+        //이슈: 'z'-'a'=25이지만  이떄'a'는 0이다. 즉 0~25로 계산된다. 그러므로 알파벳은 26자이다.
+        /*int[] arr=new int[26];
+        Arrays.fill(arr, -1);
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        String s = br.readLine();
+
+        for(int i=0;i<s.length();i++){
+            char c = s.charAt(i);
+            if (arr[c-'a']==-1){
+                arr[c -'a']=i;
+            }
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i]+" ");
+        }*/
+
     }
 }
