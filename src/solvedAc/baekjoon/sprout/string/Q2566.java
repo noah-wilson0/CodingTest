@@ -1,4 +1,4 @@
-package solvedAc.baekjoon.sprout;
+package solvedAc.baekjoon.sprout.string;
 
 import java.util.Scanner;
 import java.util.StringTokenizer;

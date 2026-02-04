@@ -1,4 +1,4 @@
-package solvedAc.baekjoon.sprout;
+package solvedAc.baekjoon.sprout.string;
 
 import java.io.IOException;
 import java.util.Scanner;
