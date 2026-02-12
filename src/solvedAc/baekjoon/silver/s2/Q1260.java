@@ -37,7 +37,7 @@ public class Q1260 {
     static void dfs(int s) {
         Deque<Integer> stack = new ArrayDeque();
         StringBuilder sb = new StringBuilder();
-        stack.add(s);
+        stack.push(s);
         while (!stack.isEmpty()) {
             Integer top = stack.pop();
             if (!visited[top]) {
@@ -59,7 +59,7 @@ public class Q1260 {
         Queue<Integer> queue = new ArrayDeque();
         StringBuilder sb = new StringBuilder();
         visited[s] = true;
-        queue.add(s);
+        queue.offer(s);
         while (!queue.isEmpty()) {
             Integer front = queue.poll();
             sb.append(front + " ");
