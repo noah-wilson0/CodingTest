@@ -1,124 +1,144 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Scanner;
 
 public class Main2 {
     public static void main(String[] args) {
-        //2828
-        //41~02 =21분  바구니 이동 로직 생각하는데 10분 넘게 걸림
-        // 바구니가 왼/오 로 이동해야할 경우를 알려면
-        // 바구니의 left/right값을 따로 저장해야 된다.
-        //left는 항상 1에서 시작, right=m이다.
-        //공식: 이동할 위치 - 이동거리, 위치 조정
-        //left > j 일때, 이동거리=left - j  left=j, right= right - 이동거리(left - j)
-        //right < j 일때, 이동거리=j - right right=j, left= left + 이동거리(j-right)
-        //left <= j  && right>=j 일때 이동거리 없음
+        //2-12복습
+        //10773
+        //27~34=7
+        //stack사용
 
+       /* Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        Deque<Integer> stack = new ArrayDeque();
+        int sum = 0;
+        for (int i = 0; i < t; i++) {
+            int n = sc.nextInt();
+            if (n == 0 && !stack.isEmpty()) {
+                stack.pop();
+            }
+            else {
+                stack.push(n);
+            }
+        }
+        while (!stack.isEmpty()) {
+            sum += stack.pop();
+        }
+        System.out.println(sum);*/
+        //1193
+        //37
+        //알아야 하는것
+        // 몇번째 대각선인가?
+        // => 대각의 수는 +1씩 늘어남, (x>i, i++)일때 x-i가 가능할때까지 뺀다.
+        // 더이상  뺼 수 없다면 i가 분모/분자 값이 된다.
+        // 왼,오 어디 시작하는 대각인가?
+        //i%2==0 을 하여 홀수 있때는 분자=i, 짝수일때 분모=i
+        // 분모/분자의 값이 뭔가?
+        //최종 x-i를 한 값이다. 기준 x=5일때  i=3
+        // 분모=분모/분자 -(x-i) x-i=2이므로   분자 =3  3번째 대각의 2번째에 위치한다는 것으로
+        //i=3이므로 왼쪽 시작(분자) 이므로 분자3- (대각 갯수3-대각선 위치위치값2)/ 분모 기본1 + (대각 갯수3-위치값2)
+        //공식화:
+        // 위치값=대각갯수n-대각선의 위치값(더이상 나눠지지않을때 i)
+        // 홀: 기준i값(더이상 나눠지지 않을때 다음 i 값) -위치값/분모 기본1 + 위치값
+        // 짝:분자 기본1 + 위치값 / 기준i값(더이상 나눠지지 않을때 다음 i 값) -위치값
+        //시간 제한 걸릴 것 같긴 함 1~10_000_000 > 0.5초
+        //15분 고민후 정답 참고
+        //=> 등차수열 이용한다
+        //  ==> 등차수열 n-1 합공식 을 빼는것과 같다. (n-1)(n-1+1)/2 = n(n-1)/2
+        //loc=x-n(n-1)/2
+        //홀수: loc/i-loc
+        //짝수 i-loc/loc
 
-/*        Scanner sc = new Scanner(System.in);
+        /*Scanner sc = new Scanner(System.in);
+        int x = sc.nextInt();
+        int i = 0;
+        int sum = 0;
+        int loc = 0;
 
+        while (x > sum) {
+            i++;
+            sum = (i - 1) * i / 2;
+        }
+        int prevCnt = sum - i + 1;
+        loc = x - prevCnt;
+        if (i % 2 != 0) {
+            System.out.println(String.format("%d/%d",
+                    loc,i-loc
+                    ));
+        } else {
+            System.out.println(String.format("%d/%d",i-loc,loc));
+        }*/
+
+        //1018
+        //40분?
+        /*
+         n-8만/m-8만큼 loop를 순회하여  다시 칠해야될 정사각형의 최소 갯수를 구한다.
+         경우 1
+         loop m이 홀수 값일 경우 B
+         lop m 이 짝수 값일 경우 W
+         경우 2
+         loop m이 홀수 값일 경우 W
+         lop m 이 짝수 값일 경우 B
+
+         n-8, m-8 만큼 반복하며 최소 갯수를 갱신한다.
+         경우 1의  다시 칠해야될 정사각형 갯수를 구한 후
+         n*m- 경우1의 갯수 = 경우 2의 갯수
+          최소 갯수 =min경(1우 1의 갯수,경우 2의 갯수)
+         */
+        Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int m = sc.nextInt();
-        int j = sc.nextInt();
 
-        int left=1;
-        int right = m;
+        boolean[][] board = new boolean[n][m]; //w=true, b=false
 
-        int distance = 0;
-        int total = 0;
+        int rn = n - 8+1;
+        int rm = m - 8+1;
 
-        for (int i = 0; i < j; i++) {
-            int apple = sc.nextInt();
+        int min = n * m;
 
-            if (left > apple) {
-                distance = left - apple;
-                left = apple;
-                right -= distance;
-                total += distance;
-            } else if (right < apple) {
-                distance = apple - right;
-                left += distance;
-                right = apple;
-                total += distance;
+        boolean check = true;
+
+        for (int i = 0; i < n; i++) {
+            String s = sc.next();
+            for (int j = 0; j < m; j++) {
+                char c = s.charAt(j);
+                if (c == 'W') {
+                    board[i][j] = true;
+                } else {
+                    board[i][j] = false;
+                }
             }
         }
-        System.out.println(total);*/
 
-        //2941
-        //24~33=9
-        //queue에 char단위로 추가하고 조건문으로  글자수 카운트 ++
-        //queue로 하므로 조건문에서 npe가능 끝 문자가 c,d,l,n,s,z등일 경우 NPE발생
-        //-> fori, s.charat, index변경을 통해 글자 마다 loop돌 수 있게 , 글자수 카운트는 loop마다
-        /*Scanner sc = new Scanner(System.in);
-        int cnt = 0;
-        String s = sc.nextLine();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            if (c == 'c') {
-                if (i + 1 < s.length()) {
-                    char c1 = s.charAt(i + 1);
-                    if (c1 == '=' || c1 == '-') i++;
-                }
-
-            } else if (c == 'd') {
-                if (i + 1 < s.length()) {
-                    char c1 = s.charAt(i + 1);
-                    if (c1 == '-') {
-                        i++;
-                    } else if (c1 == 'z') {
-                        if (i + 2 < s.length() && s.charAt(i + 2) == '=') {
-                            i += 2;
+        for (int x = 0; x < rn; x++) {
+            for (int y = 0; y < rm; y++) {
+                int cnt = 0;
+                for (int i = x; i < x + 8; i++) {  //i가 홀수일떄 w시작 i가 짝수일때 B시작 로직이 빠짐
+                    for (int j = y; j < y + 8; j++) {
+                        if (check) {
+                            if ((j + 1) % 2 != 0 && board[i][j] != true) {
+                                cnt++;
+                            } else if ((j + 1) % 2 == 0 && board[i][j] != false) {
+                                cnt++;
+                            }
+                        } else {
+                            if ((j + 1) % 2 != 0 && board[i][j] != false) {
+                                cnt++;
+                            } else if ((j + 1) % 2 == 0 && board[i][j] != true) {
+                                cnt++;
+                            }
                         }
                     }
+                    check = !check;
                 }
+                int cnt2 = Math.min(cnt, 64 - cnt);
+                min = Math.min(min, cnt2);
 
-            } else if (c == 'l') {
-                if (i + 1 < s.length() && s.charAt(i + 1) == 'j') i++;
-
-            } else if (c == 'n') {
-                if (i + 1 < s.length() && s.charAt(i + 1) == 'j') i++;
-
-            } else if (c == 's') {
-                if (i + 1 < s.length() && s.charAt(i + 1) == '=') i++;
-
-            } else if (c == 'z') {
-                if (i + 1 < s.length() && s.charAt(i + 1) == '=') i++;
-            }
-
-            cnt++;
-        }
-        System.out.println(cnt);*/
-        //4673
-        //2~19=17
-        //셀프 넘버=생성자가 없는 숫자.
-        //n= 생성자(정수n + n의 자릿수...)
-        //ex) 2= 1+1 4=2+2 ... 39=33+3+3
-        // 2는 생성자 1이 있다. 4는 생성자 2가 있다. ....
-        //생성자가 없는 숫자를 구하는 방법?
-        //1~10_000숫자를 loop를 돌며 n+ (n의 자릿수)합을 구하여 나온 값을
-        // boolean[10_000]에 true를 한다.
-        //final loop에서 true가 아닌 i를 출력한다.
-
-        //자릿수는 n%10을통해 얻는다.
-        //n%10을 n의 자릿수만큼 진행하면 n~1번째 자릿수 구해진다.
-        //
-        boolean[] booleans = new boolean[10_000 + 1];
-        for (int i = 1; i <= 10_000; i++) {
-
-            String s = String.valueOf(i);
-            int num = i;
-            int constNum = i;
-            for (int j = 0; j < s.length(); j++) { //자릿수만큼 더하기
-                constNum += num % 10;
-                num /= 10;
-            }
-            if (constNum <= 10_000) {
-                booleans[constNum] = true;
             }
         }
 
-        for (int i = 1; i <= 10_000; i++) if (!booleans[i]) System.out.println(i);
+        System.out.println(min);
 
     }
 
