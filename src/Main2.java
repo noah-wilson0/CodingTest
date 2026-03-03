@@ -1,145 +1,150 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main2 {
-    /*    static class Node {
-            int index;
-            int priority;
+    public static void main(String[] args)  {
+        //2-24
+        //30804
+        //34
+        //두 포인터 문제인듯
+        //과일의 종류가 2개 이상 확인방법?Set.size>2
 
-            public Node(int index, int priority) {
-                this.index = index;
-                this.priority = priority;
+/*        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] array = new int[n];
+        int left = 0;
+        int right = 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            int num = sc.nextInt();
+            array[i] = num;
+        }
+
+
+        for (right = 0; right < n; right++) {
+            map.put(array[right], map.getOrDefault(array[right], 0) + 1);
+
+            while (map.size() > 2) {
+                map.put(array[left], map.get(array[left]) - 1);
+                if (map.get(array[left])==0) {
+                    map.remove(array[left]);
+                }
+                left++;
             }
-        }*/
-    static Character[][] array;
-    static int n;
-    static int max = 0;
 
-    public static void main(String[] args) throws IOException {
-        //2-19복습
-        //1966
-        // 시간 초과
-        //Map<인덱스Integer,중요도Integer> 자료구조를 사용하여 문서의 중요도를 알 수 있게 한다.
-        // queue를 써서 문서의 인쇄 순서를 유지한다.
-        //우선순위가 제일 높을때만 poll한다. 이외는 re-offer
-        //위 과정을 반복하며 request와 같을때 break후 출력한다.
-        //map이 아니라 pq를 쓰면 편해진다.
+            max = Math.max(max, right - left + 1);
 
-       /* Scanner sc = new Scanner(System.in);
+
+        }
+        System.out.println(max);*/
+
+        //2607
+        //40
+        /*
+        두 단어의 문자 종류가 같을때,
+        같은 문자의 갯수(문자 하나를 더하거나, 빼거나, 바꾸어도 된다)일때
+        비슷한 단어가 된다.
+        알파벳 int배열 사용
+
+        map으로 문자 갯수가 똑같은지 확인하기
+        문자 종류 = s1 알파벳 배열[s2.charAt(i)] > 0일때 ++
+        1. s1.length-1=s2.length
+        1-1. s2.문자 종류=s2.length =>  s1의 문자를 뺏을때 두단어가 같은 종류의 문자
+        2. s1.length+1=s2.length
+        2-1. s1.문자 종류 = s1.length => s1의 문자를 더했을때 두단어가 같은 종류의 문자
+        3. s1.length=s2.length
+        3-1. s1.length=s2.문자 종류 => s1과 s2의 문자 갯수가 같을떄  문자 종류가 같은 문자
+        3-2. s2.문자 종류 = s1.length -1 => s1과 s2의 문자 갯수가 같을떄 문자종류 1개를 바꾸면 같은 문자
+         */
+        /*Scanner sc = new Scanner(System.in);
 
         int t = sc.nextInt();
 
-        Queue<Node> queue = new LinkedList();
-        PriorityQueue<Node> pq = new PriorityQueue<>(
-                (a, b) -> Integer.compare(b.priority, a.priority)
-        );
+        int[] alphabet = new int[26];
+        int result = 0;
+        String s = sc.next();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            alphabet[c - 'A']++;
+        }
+
+        for (int i = 0; i < t - 1; i++) {
+            int[] check = alphabet.clone();
+            String s2 = sc.next();
+            int cnt = 0;
+
+            for (int j = 0; j < s2.length(); j++) {
+                if (check[s2.charAt(j) - 'A'] > 0) {
+                    check[s2.charAt(j) - 'A']--;
+                    cnt++;
+                }
+            }
+            if (s.length() - 1 == s2.length()) {
+                if (cnt == s2.length()) result++;
+            } else if (s.length() + 1 == s2.length()) {
+                if (cnt == s.length()) result++;
+            } else if (s.length() == s2.length()) {
+                if (cnt == s.length() || cnt == s2.length() - 1) result++;
+            }
+
+        }
+        System.out.println(result);*/
+        //1966
+        //4~9 36~45 = 14
+        //PQ<INDEX,PRIORITY>와 QUEUE<INDEX,PRIORITY>사용하면 쉬울듯
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
 
         for (int i = 0; i < t; i++) {
+            Queue<Node> queue = new LinkedList<>();
+            PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getPriority).reversed());
             int n = sc.nextInt();
-            int request = sc.nextInt();
-            int result = 0;
+            int m = sc.nextInt();
 
             for (int j = 0; j < n; j++) {
-                int element = sc.nextInt();
-                queue.offer(new Node(j,element));
-                pq.offer(new Node(j, element));
+                int priority = sc.nextInt();
+                queue.offer(new Node(j, priority));
+                pq.offer(new Node(j, priority));
             }
+            int cnt = 1;
             while (!queue.isEmpty()) {
                 Node poll = queue.poll();
-                Node peek = pq.peek();
-                if (poll.priority < peek.priority) {
+                if (poll.priority < pq.peek().priority) {
                     queue.offer(poll);
                     continue;
                 }
-                pq.poll();
-                result++;
-                if (poll.index == request) {
-                    System.out.println(result);
+                if (poll.index == m) {
+                    System.out.println(cnt);
                     break;
                 }
-
-            }
-            queue.clear();
-            pq.clear();
-
-        }
-        sc.close();*/
-
-        //3085
-        //시간초과49분 -> 하지만 로직 생각이 오래걸렷음
-        //사탕의 색을 교환햇을때 시행마다 가장 긴 연속 부분의 길이를 비교 및 저장하여 최대갯수를 구한다.
-        //행은 열교환,열은 행교환
-        //행교환 array[i][j]!= array[i][j+1] 일때 swap(array[i][j+1],array[i+1][j+1]) (단, i+1<n or j+1<n)
-        //열교환 array[i][j]!= array[i+1][j] 일때 swap(array[i+1][j],array[i+1][j+1]) (단, i+1<n or j+1<n)
-
-
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        n = Integer.parseInt(br.readLine());
-        array = new Character[n][n];
-        for (int i = 0; i < n; i++) {
-            String s = br.readLine();
-            for (int j = 0; j < n; j++) {
-                array[i][j] = s.charAt(j);
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if ( i + 1 < n) {
-                    swap(i, j, i + 1, j);
-                    check();
-                    swap(i, j, i + 1, j);
-                }
-                if ( j + 1 < n) {
-                    swap(i, j, i, j + 1);
-                    check();
-                    swap(i, j, i, j + 1);
-                }
+                pq.poll();
+                cnt++;
 
             }
         }
-        System.out.println(max);
+
+
+    }
+    static class Node{
+        int index;
+        int priority;
+
+        public Node(int index, int priority) {
+            this.index = index;
+            this.priority = priority;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public int getPriority() {
+            return priority;
+        }
     }
 
-    static void check() {
-        for (int i = 0; i < n; i++) {
-            int cnt = 1;
-            for (int j = 0; j < n - 1; j++) {
-                if (array[i][j] == array[i][j + 1]) {
-                    cnt++;
-                } else {
-                    max = Math.max(max, cnt);
-                    cnt = 1;
-                }
-            }
-            max = Math.max(max, cnt);
-        }
-
-        //열 탐색
-        for (int j = 0; j < n; j++) {
-            int cnt = 1;
-            for (int i = 0; i < n - 1; i++) {
-                if (array[i][j] == array[i +1][j]) {
-                    cnt++;
-                } else {
-                    max = Math.max(max, cnt);
-                    cnt = 1;
-                }
-                max = Math.max(max, cnt);
-
-            }
-            max = Math.max(max, cnt);
-        }
-    }
-    static void swap(int i, int j, int k, int l) {
-        Character temp = array[i][j];
-        array[i][j] = array[k][l];
-        array[k][l] = temp;
-    }
 
 
 }
